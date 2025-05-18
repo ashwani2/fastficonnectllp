@@ -1,5 +1,4 @@
-import React, { useState, useRef } from "react";
-import { Link } from "react-router-dom";
+import { useState, useRef } from "react";
 import { Menu, X, ChevronDown } from "lucide-react";
 
 const Header = () => {
@@ -11,24 +10,23 @@ const Header = () => {
   const closeMenu = () => setIsOpen(false);
 
   const openDropdown = () => {
-    clearTimeout(closeTimeout); // Prevent immediate close
+    clearTimeout(closeTimeout);
     setIsDropdownOpen(true);
   };
 
   const closeDropdown = () => {
-    closeTimeout = setTimeout(() => setIsDropdownOpen(false), 200); // Add delay
+    closeTimeout = setTimeout(() => setIsDropdownOpen(false), 200);
   };
 
   return (
     <header className="bg-blue-900 text-white shadow-md">
       <div className="container mx-auto flex justify-between items-center p-4">
         {/* Logo */}
-        <Link
-          to="/"
-          className="text-2xl font-bold hover:text-blue-300 transition"
-        >
-          FastFi Connect
-        </Link>
+        <a href="/" className="flex items-center hover:opacity-90 transition">
+          <div className="p-1 rounded-lg shadow-md flex items-center justify-center">
+            <img src="../../public/images/logo6.png" alt="FastFi Connect Logo" className="h-10 w-auto" />
+          </div>
+        </a>
 
         {/* Hamburger Menu (Mobile) */}
         <button
@@ -47,30 +45,34 @@ const Header = () => {
           <ul className="flex flex-col md:flex-row space-y-4 md:space-y-0 md:space-x-6 p-4 md:p-0">
             {/* Home */}
             <li>
-              <Link
-                to="/"
+              <a
+                href="/"
                 className="hover:text-blue-300 transition"
                 onClick={closeMenu}
               >
                 Home
-              </Link>
+              </a>
             </li>
 
-            {/* Loans Dropdown */}
-            <li className="relative group">
+            {/* Loans Dropdown - IMPROVED FOR MOBILE */}
+            <li className="relative">
               <button
-                className="flex items-center hover:text-blue-300 transition"
+                className="flex items-center hover:text-blue-300 transition w-full md:w-auto"
                 onClick={() => setIsDropdownOpen(!isDropdownOpen)}
-                onMouseEnter={() => setIsDropdownOpen(true)}
+                onMouseEnter={openDropdown}
+                onMouseLeave={closeDropdown}
               >
                 Loans <ChevronDown size={18} className="ml-1" />
               </button>
 
               {isDropdownOpen && (
                 <ul
-                  className="absolute right-0 mt-2 w-48 bg-white text-gray-800 shadow-lg rounded-md overflow-hidden group-hover:block"
-                  onMouseEnter={() => setIsDropdownOpen(true)}
-                  onMouseLeave={() => setIsDropdownOpen(false)}
+                  className={`md:absolute ${
+                    isOpen ? 'static' : 'absolute'
+                  } right-0 mt-2 w-full md:w-48 bg-blue-800 md:bg-white text-white md:text-gray-800 shadow-lg rounded-md overflow-hidden`}
+                  ref={dropdownRef}
+                  onMouseEnter={openDropdown}
+                  onMouseLeave={closeDropdown}
                 >
                   {[
                     { name: "Credit Card", path: "/loans/credit-card" },
@@ -83,13 +85,16 @@ const Header = () => {
                     { name: "Gold Loan", path: "/loans/gold-loan" },
                   ].map((loan, index) => (
                     <li key={index}>
-                      <Link
-                        to={loan.path}
-                        className="block px-4 py-2 hover:bg-blue-100 transition"
-                        onClick={() => setIsDropdownOpen(false)}
+                      <a
+                        href={loan.path}
+                        className="block px-4 py-2 hover:bg-blue-700 md:hover:bg-blue-100 transition"
+                        onClick={() => {
+                          closeMenu();
+                          setIsDropdownOpen(false);
+                        }}
                       >
                         {loan.name}
-                      </Link>
+                      </a>
                     </li>
                   ))}
                 </ul>
@@ -103,13 +108,13 @@ const Header = () => {
               { name: "Admin", path: "/admin/login" },
             ].map((item, index) => (
               <li key={index}>
-                <Link
-                  to={item.path}
+                <a
+                  href={item.path}
                   className="hover:text-blue-300 transition"
                   onClick={closeMenu}
                 >
                   {item.name}
-                </Link>
+                </a>
               </li>
             ))}
           </ul>
