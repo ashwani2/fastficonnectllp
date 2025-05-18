@@ -1,5 +1,6 @@
 import { useState, useRef } from "react";
 import { Menu, X, ChevronDown } from "lucide-react";
+import Logo from "../../public/images/logo6.png"; // Adjust the path as necessary
 
 const Header = () => {
   const [isOpen, setIsOpen] = useState(false);
@@ -24,7 +25,7 @@ const Header = () => {
         {/* Logo */}
         <a href="/" className="flex items-center hover:opacity-90 transition">
           <div className="p-1 rounded-lg shadow-md flex items-center justify-center">
-            <img src="../../public/images/logo6.png" alt="FastFi Connect Logo" className="h-10 w-auto" />
+            <img src={Logo} alt="FastFi Connect Logo" className="h-10 w-auto" />
           </div>
         </a>
 
@@ -68,7 +69,7 @@ const Header = () => {
               {isDropdownOpen && (
                 <ul
                   className={`md:absolute ${
-                    isOpen ? 'static' : 'absolute'
+                    isOpen ? "static" : "absolute"
                   } right-0 mt-2 w-full md:w-48 bg-blue-800 md:bg-white text-white md:text-gray-800 shadow-lg rounded-md overflow-hidden`}
                   ref={dropdownRef}
                   onMouseEnter={openDropdown}
